@@ -5,6 +5,31 @@ $pdo = new PDO(
     ""
 );
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+echo $_SERVER["REQUEST_METHOD"] . "<br>";
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $title = $_POST["title"];
+    $description = $_POST["description"];
+    $price = $_POST["price"];
+    $date = date("Y-m-d H:i:s");
+
+    $insert_query =
+        "INSERT INTO 
+        products (title, image, description, price, create_date)
+    VALUE 
+        (:title, :image, :description, :price, :date)";
+
+    $statement = $pdo->prepare($insert_query);
+
+    $statement->bindValue(":title", $title);
+    $statement->bindValue(":image", "");
+    $statement->bindValue(":description", $description);
+    $statement->bindValue(":price", $price);
+    $statement->bindValue(":date", $date);
+
+    $statement->execute();
+}
 ?>
 
 <!doctype html>
@@ -29,19 +54,19 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         <div class="mb-3">
             <label class="form-label">Product Image</label>
             <br>
-            <input type="file">
+            <input type="file" name="image">
         </div>
         <div class="mb-3">
             <label class="form-label">Product Title</label>
-            <input type="text" class="form-control">
+            <input type="text" name="title" class="form-control">
         </div>
         <div class="mb-3">
             <label class="form-label">Product Description</label>
-            <textarea class="form-control"></textarea>
+            <textarea class="form-control" name="description"></textarea>
         </div>
         <div class="mb-3">
             <label class="form-label">Product Price</label>
-            <input type="number" step="0.01" class="form-control">
+            <input type="number" step="0.01" name="price" class="form-control">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
