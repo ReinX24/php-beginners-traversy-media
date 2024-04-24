@@ -53,13 +53,19 @@ $products = $statement->fetchAll(PDO::FETCH_ASSOC); // associative array
             <?php foreach ($products as $i => $product) : ?>
                 <tr>
                     <th scope="row"><?= $i + 1; ?></th>
-                    <td></td>
+                    <td>
+                        <img src="<?= $product["image"]; ?>" class="thumb-image">
+                    </td>
                     <td><?= $product["title"]; ?></td>
                     <td><?= $product["price"]; ?></td>
                     <td><?= $product["create_date"]; ?></td>
                     <td>
-                        <button type="button" class="btn btn-sm btn-outline-primary">Edit</button>
-                        <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+                        <a href="update.php?id=<?= $product["id"]; ?>" type="button" class="btn btn-sm btn-outline-primary">Edit</a>
+
+                        <form action="delete.php" method="POST" class="d-inline-block">
+                            <input type="hidden" name="id" value="<?= $product["id"]; ?>">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                        </form>
                     </td>
                 </tr>
             <?php endforeach; ?>

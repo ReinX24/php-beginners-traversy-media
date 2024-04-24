@@ -6,17 +6,39 @@ $pdo = new PDO(
 );
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+$id = $_GET["id"] ?? null;
+
+if (!$id) {
+    header("Location: index.php");
+    exit;
+}
+
+$update_query =
+    "SELECT
+        *
+    FROM
+        products
+    WHERE
+        id = :id";
+
+$statement = $pdo->prepare($update_query);
+
+$statement->bindValue(":id", $id);
+
+$statement->execute();
+
+$product = $statement->fetch(PDO::FETCH_ASSOC);
+
 $errors = [];
 
-$title = "";
-$price = "";
-$description = "";
+$title = $product["title"];
+$price = $product["price"];
+$description = $product["description"];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $title = $_POST["title"];
     $description = $_POST["description"];
     $price = $_POST["price"];
-    $date = date("Y-m-d H:i:s");
 
     if (!$title) {
         $errors[] = "Product title is required";
@@ -33,10 +55,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (empty($errors)) {
         // Uploading an image
         $image = $_FILES["image"] ?? null;
-        $imagePath = "";
+        $imagePath = $product["image"];
 
         // Checks if the image exists and if it has a tmp_name (file detected)
         if ($image && $image["tmp_name"]) {
+
+            // Delete the recorded image for a product when a new image is
+            // uploaded
+            if ($product["image"]) {
+                unlink($product["image"]); // removes image
+            }
 
             // Creating a unique image path
             $imagePath = "images/" . randomString(8) . "/" . $image["name"];
@@ -48,10 +76,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         $update_query =
-            "INSERT INTO 
-                products (title, image, description, price, create_date)
-            VALUE 
-                (:title, :image, :description, :price, :date)";
+            "UPDATE 
+                products 
+            SET 
+                title = :title, image = :image, description = :description, 
+                price = :price
+            WHERE
+                id = :id";
 
         $statement = $pdo->prepare($update_query);
 
@@ -59,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $statement->bindValue(":image", $imagePath);
         $statement->bindValue(":description", $description);
         $statement->bindValue(":price", $price);
-        $statement->bindValue(":date", $date);
+        $statement->bindValue(":id", $id);
 
         $statement->execute();
 
@@ -97,7 +128,10 @@ function randomString($strLen)
 </head>
 
 <body>
-    <h1>Create new Product</h1>
+
+    <p><a href="index.php" class="btn btn-secondary">Go Back to Products</a></p>
+
+    <h1>Update Product <b><?= $product["title"]; ?></b></h1>
 
     <?php if (!empty($errors)) : ?>
         <div class="alert alert-danger">
@@ -108,6 +142,11 @@ function randomString($strLen)
     <?php endif; ?>
 
     <form method="POST" enctype="multipart/form-data">
+
+        <?php if ($product["image"]) : ?>
+            <img src="<?= $product["image"]; ?>" class="update-image">
+        <?php endif; ?>
+
         <div class="mb-3">
             <label class="form-label">Product Image</label>
             <br>
