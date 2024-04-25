@@ -8,11 +8,28 @@ $pdo = new PDO(
 // Show and throw if there are any errors
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$query = "SELECT * FROM products ORDER BY create_date DESC";
+$search = $_GET["search"] ?? "";
 
-$statement = $pdo->prepare($query); // preparing for execution
+if ($search) {
+    $query =
+        "SELECT * FROM 
+            products 
+        WHERE 
+            title 
+        LIKE 
+            :title 
+        ORDER BY 
+            create_date DESC";
+    $statement = $pdo->prepare($query); // preparing for execution
+    $statement->bindValue(":title", "%$search%");
+} else {
+    $query = "SELECT * FROM products ORDER BY create_date DESC";
+    $statement = $pdo->prepare($query); // preparing for execution
+}
+
 $statement->execute(); // gets query from database
 $products = $statement->fetchAll(PDO::FETCH_ASSOC); // associative array
+
 ?>
 
 <!doctype html>
@@ -37,6 +54,14 @@ $products = $statement->fetchAll(PDO::FETCH_ASSOC); // associative array
     <p>
         <a href="create.php" class="btn btn-success">Create Product</a>
     </p>
+
+    <form action="">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search for products" name="search" value="<?= $search; ?>">
+            <button class="input-group-text" type="submit">Search</button>
+        </div>
+    </form>
+
 
     <table class="table">
         <thead>

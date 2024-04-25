@@ -1,0 +1,17 @@
+{
+  "name": "reinx/15_autoloading",
+  "authors": [
+    {
+      "name": "Rein",
+      "email": "reinX244@gmail.com"
+    }
+  ],
+  "require": {
+    "guzzlehttp/guzzle": "^7.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "app\\": "./app"
+    }
+  }
+}

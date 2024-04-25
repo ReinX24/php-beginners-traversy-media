@@ -1,0 +1,20 @@
+# Running built in PHP virtual hosts
+- cd into public directory of app
+- run "php -S localhost:8080"
+
+Go to the index page of the application:
+http://localhost:8080/products/index.php
+
+Create composer.json file
+Composer init
+
+The current folder will be the base namespace for composer, this means that all
+classes in the 03_good directory will be in the app\ namespace.
+  "autoload": {
+    "psr-4": {
+      "app\\": "./"
+    }
+  },
+
+After configuring, update to generate vendor directory
+Composer update
