@@ -20,9 +20,23 @@ class ProductController
         ]);
     }
 
-    public static function create()
+    public static function create(Router $router)
     {
-        echo "Create page";
+        $errors = [];
+        $product = [
+            "title" => "",
+            "description" => "",
+            "image" => "",
+            "price" => "",
+        ];
+
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        }
+
+        $router->renderView("products/create", [
+            "product" => $product,
+            "errors" => $errors
+        ]);
     }
 
     public static function update(Router $router)
