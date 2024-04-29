@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace app\controllers;
 
 use app\Router;
+use app\models\Product;
 
 class ProductController
 {
@@ -23,7 +24,7 @@ class ProductController
     public static function create(Router $router)
     {
         $errors = [];
-        $product = [
+        $productData = [
             "title" => "",
             "description" => "",
             "image" => "",
@@ -31,10 +32,20 @@ class ProductController
         ];
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            $productData["title"] = $_POST["title"];
+            $productData["description"] = $_POST["description"];
+            $productData["price"] = $_POST["price"];
+            $productData["imageFile"] = $_FILES["image"] ?? null;
+
+            $product = new Product();
+            $product->load($productData);
+            $product->save();
+            header("Location: /products");
+            exit;
         }
 
         $router->renderView("products/create", [
-            "product" => $product,
+            "product" => $productData,
             "errors" => $errors
         ]);
     }
