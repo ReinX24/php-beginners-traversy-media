@@ -34,14 +34,17 @@ class ProductController
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $productData["title"] = $_POST["title"];
             $productData["description"] = $_POST["description"];
-            $productData["price"] = $_POST["price"];
+            $productData["price"] = (float) $_POST["price"];
             $productData["imageFile"] = $_FILES["image"] ?? null;
 
             $product = new Product();
             $product->load($productData);
-            $product->save();
-            header("Location: /products");
-            exit;
+            $errors = $product->save();
+
+            if (empty($errors)) {
+                header("Location: /products");
+                exit;
+            }
         }
 
         $router->renderView("products/create", [

@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\Database;
+
 class Product
 {
     public ?int $id = null;
@@ -35,6 +37,39 @@ class Product
             $errors[] = "Product price is required.";
         }
 
-        // 
+        if (!is_dir(__DIR__ . "/../public/images")) {
+            mkdir(__DIR__ . "/../public/images");
+        }
+
+        if (empty($errors)) {
+            // Uploading an image
+            // Checks if the image exists and if it has a tmp_name (file detected)
+            if ($this->imageFile && $this->imageFile["tmp_name"]) {
+
+                if ($this->imagePath) {
+                    unlink(__DIR__ . "/../public/" . $this->imagePath);
+                }
+
+                // Creating a unique image path
+                $this->imagePath = "images/" . randomString(8) . "/" . $this->imageFile["name"];
+
+                // Creating a unique folder for the image
+                mkdir(dirname(__DIR__ . "/../public/" . $this->imagePath));
+
+                move_uploaded_file($this->imageFile["tmp_name"], __DIR__ . "/../public/" . $this->imagePath);
+            }
+
+            $db = Database::$db;
+
+            if ($this->id) {
+                // Update
+                $db->updateProduct($this);
+            } else {
+                // Create a new product
+                $db->createProduct($this);
+            }
+        }
+
+        return $errors;
     }
 }
