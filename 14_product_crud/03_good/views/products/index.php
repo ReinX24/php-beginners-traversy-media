@@ -28,7 +28,9 @@
             <tr>
                 <th scope="row"><?= $i + 1; ?></th>
                 <td>
-                    <img src="/<?= $product["image"]; ?>" class="thumb-image">
+                    <?php if ($product["image"]) : ?>
+                        <img src="/<?= $product["image"]; ?>" class="thumb-image">
+                    <?php endif; ?>
                 </td>
                 <td><?= $product["title"]; ?></td>
                 <td><?= $product["price"]; ?></td>

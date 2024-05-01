@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\Database;
+use app\helpers\UtilHelper;
 
 class Product
 {
@@ -51,7 +52,7 @@ class Product
                 }
 
                 // Creating a unique image path
-                $this->imagePath = "images/" . randomString(8) . "/" . $this->imageFile["name"];
+                $this->imagePath = "images/" . UtilHelper::randomString(8) . "/" . $this->imageFile["name"];
 
                 // Creating a unique folder for the image
                 mkdir(dirname(__DIR__ . "/../public/" . $this->imagePath));

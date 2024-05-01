@@ -59,7 +59,7 @@ class Database
         $statement = $this->pdo->prepare($create_query);
 
         $statement->bindValue(":title", $product->title);
-        $statement->bindValue(":image", $product->imageFile);
+        $statement->bindValue(":image", $product->imagePath);
         $statement->bindValue(":description", $product->description);
         $statement->bindValue(":price", $product->price);
         $statement->bindValue(":date", date("Y-m-d H:i:s"));
@@ -68,5 +68,9 @@ class Database
 
         // Redirect the user to the index page
         header("Location: index.php");
+    }
+
+    public function updateProduct(Product $product)
+    {
     }
 }
