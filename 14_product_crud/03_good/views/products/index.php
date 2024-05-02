@@ -38,7 +38,7 @@
                 <td>
                     <a href="update.php?id=<?= $product["id"]; ?>" type="button" class="btn btn-sm btn-outline-primary">Edit</a>
 
-                    <form action="delete.php" method="POST" class="d-inline-block">
+                    <form action="/products/delete" method="POST" class="d-inline-block">
                         <input type="hidden" name="id" value="<?= $product["id"]; ?>">
                         <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
                     </form>

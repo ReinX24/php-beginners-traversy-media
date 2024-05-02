@@ -73,4 +73,19 @@ class Database
     public function updateProduct(Product $product)
     {
     }
+
+    public function deleteProduct($id)
+    {
+        $delete_query =
+            "DELETE FROM
+                products
+            WHERE
+                id = :id";
+
+        $statement = $this->pdo->prepare($delete_query);
+
+        $statement->bindValue(":id", $id);
+
+        $statement->execute();
+    }
 }

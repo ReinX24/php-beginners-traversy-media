@@ -60,6 +60,12 @@ class ProductController
 
     public static function delete(Router $router)
     {
-        echo "Delete page";
+        $id = $_POST["id"] ?? null;
+        if (!$id) {
+            header("Location: /products");
+            exit;
+        }
+        $router->db->deleteProduct($id);
+        header("Location: /products");
     }
 }
