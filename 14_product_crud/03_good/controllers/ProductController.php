@@ -55,7 +55,25 @@ class ProductController
 
     public static function update(Router $router)
     {
-        echo "Update page";
+        $id = $_GET["id"] ?? null;
+        if (!$id) {
+            header("Location: /products");
+            exit;
+        }
+        $productData = $router->db->getProductById($id);
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $productData["title"] = $_POST["title"];
+            $productData["description"] = $_POST["description"];
+            $productData["price"] = (float) $_POST["price"];
+            $productData["imageFile"] = $_FILES["image"] ?? null;
+
+            // TODO: finish update product codeblock.
+        }
+
+        $router->renderView("products/update", [
+            "product" => $productData
+        ]);
     }
 
     public static function delete(Router $router)

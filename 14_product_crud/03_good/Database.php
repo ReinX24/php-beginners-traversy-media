@@ -48,6 +48,25 @@ class Database
         return $statement->fetchAll(PDO::FETCH_ASSOC); // associative array
     }
 
+    public function getProductById($id)
+    {
+        $update_query =
+            "SELECT
+                *
+            FROM
+                products
+            WHERE
+                id = :id";
+
+        $statement = $this->pdo->prepare($update_query);
+
+        $statement->bindValue(":id", $id);
+
+        $statement->execute();
+
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function createProduct(Product $product)
     {
         $create_query =
