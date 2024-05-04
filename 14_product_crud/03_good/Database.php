@@ -91,6 +91,24 @@ class Database
 
     public function updateProduct(Product $product)
     {
+        $update_query =
+            "UPDATE 
+                products 
+            SET 
+                title = :title, image = :image, description = :description, 
+                price = :price
+            WHERE
+                id = :id";
+
+        $statement = $this->pdo->prepare($update_query);
+
+        $statement->bindValue(":title", $product->title);
+        $statement->bindValue(":image", $product->imagePath);
+        $statement->bindValue(":description", $product->description);
+        $statement->bindValue(":price", $product->price);
+        $statement->bindValue(":id", $product->id);
+
+        $statement->execute();
     }
 
     public function deleteProduct($id)

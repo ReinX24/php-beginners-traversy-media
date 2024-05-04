@@ -60,6 +60,10 @@ class ProductController
             header("Location: /products");
             exit;
         }
+
+        $errors = [];
+
+        // Returns the id and attributes of a product using id attribute
         $productData = $router->db->getProductById($id);
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -68,11 +72,19 @@ class ProductController
             $productData["price"] = (float) $_POST["price"];
             $productData["imageFile"] = $_FILES["image"] ?? null;
 
-            // TODO: finish update product codeblock.
+            $product = new Product();
+            $product->load($productData);
+            $errors = $product->save();
+
+            if (empty($errors)) {
+                header("Location: /products");
+                exit;
+            }
         }
 
         $router->renderView("products/update", [
-            "product" => $productData
+            "product" => $productData,
+            "errors" => $errors
         ]);
     }
 

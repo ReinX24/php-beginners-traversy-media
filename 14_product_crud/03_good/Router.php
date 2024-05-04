@@ -30,7 +30,16 @@ class Router
         // Checks the current PATH_INFO, return index if path does not exist.
         // When we go to the index, the PATH_INFO does not exist so the / is
         // assigned as the current url, which stores the index.
-        $currentUrl = $_SERVER["PATH_INFO"] ?? "/";
+        // $currentUrl = $_SERVER["PATH_INFO"] ?? "/";
+
+        // For configured virtual host for XAMPP
+        $currentUrl = $_SERVER["REQUEST_URI"] ?? "/";
+
+        // Removing query string form the currentUrl
+        if (strpos($currentUrl, "?") !== false) {
+            $currentUrl = substr($currentUrl, 0, strpos($currentUrl, "?"));
+        }
+
         $method = $_SERVER["REQUEST_METHOD"];
 
         if ($method === "GET") {
