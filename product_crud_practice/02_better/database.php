@@ -3,8 +3,7 @@
 // Connecting to the database using a PDO object
 $pdo = new PDO(
     "mysql:host=localhost;port=3306;dbname=products_crud",
-    "rein",
-    "123456"
+    "root",
 );
 
 // Enable errors for PDO object
