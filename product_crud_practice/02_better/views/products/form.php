@@ -13,7 +13,7 @@
 
     <!-- Checks if the products has a stored image -->
     <?php if ($product["image"]) : ?>
-        <img src="../<?= $product["image"]; ?>" alt="product-image" class="update-image">
+        <img src="../<?= $product["image"]; ?>" class="update-image">
     <?php endif; ?>
 
     <div class="mb-3">
@@ -24,7 +24,13 @@
         <label for="title" class="form-label">Product Title</label>
         <input type="text" name="title" class="form-control" value="<?= $title; ?>">
     </div>
-
-    // TODO: finish other fields
-
+    <div class="mb-3">
+        <label for="description" class="form-label">Product Description</label>
+        <textarea name="description" class="form-control"><?= $description; ?></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="price" class="form-label">Product Price</label>
+        <input type="number" step="0.01" name="price" class="form-control" value="<?= $price; ?>">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
 </form>
