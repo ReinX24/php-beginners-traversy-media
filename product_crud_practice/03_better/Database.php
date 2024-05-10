@@ -125,7 +125,16 @@ class Database
 
     public function deleteProduct(int $id)
     {
-        // TODO: finish deleteProduct function
-        $delete_product_query = "";
+        $delete_product_query =
+            "DELETE FROM
+                products
+            WHERE 
+                id = :id";
+
+        $statement = $this->pdo->prepare($delete_product_query);
+
+        $statement->bindValue(":id", $id);
+
+        $statement->execute();
     }
 }
