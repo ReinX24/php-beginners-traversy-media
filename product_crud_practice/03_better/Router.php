@@ -25,7 +25,7 @@ class Router
 
     public function addPost(string $url, array $fn)
     {
-        $this->postRoutes[$url] = $fn;
+        $this->postRoutes[$url] = ["controller" => $fn[0], "method" => $fn[1]];
     }
 
     public function resolve()

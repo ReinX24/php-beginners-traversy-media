@@ -120,6 +120,12 @@ class Database
 
         $statement = $this->pdo->prepare($update_product_query);
 
+        $statement->bindValue(":title", $product->title);
+        $statement->bindValue(":image", $product->imagePath);
+        $statement->bindValue(":description", $product->description);
+        $statement->bindValue(":price", $product->price);
+        $statement->bindValue(":id", $product->id);
+
         $statement->execute();
     }
 

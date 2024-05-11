@@ -20,9 +20,24 @@
     </thead>
     <tbody>
         <?php foreach ($products as $i => $product) : ?>
-            <!-- TODO: Finish index page -->
             <tr>
                 <td><?= $i + 1; ?></td>
+                <td>
+                    <?php if ($product["image"]) : ?>
+                        <img src="/<?= $product["image"]; ?>" class="thumb-image">
+                    <?php endif; ?>
+                </td>
+                <td><?= $product["title"]; ?></td>
+                <td><?= $product["price"]; ?></td>
+                <td><?= $product["create_date"]; ?></td>
+                <td>
+                    <a href="/products/update?id=<?= $product["id"]; ?>" class="btn btn-sm btn-outline-primary">Edit</a>
+
+                    <form action="/products/delete" class="d-inline-block">
+                        <input type="hidden" name="id" value="<?= $product["id"]; ?>">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
+                </td>
             </tr>
         <?php endforeach; ?>
     </tbody>

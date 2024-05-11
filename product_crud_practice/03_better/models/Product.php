@@ -45,7 +45,7 @@ class Product
         }
 
         // Checks if public/images folder exists
-        if (!is_dir(__DIR__ . "public/image")) {
+        if (!is_dir(__DIR__ . "/../public/images")) {
             mkdir(__DIR__ . "/../public/images");
         }
 
